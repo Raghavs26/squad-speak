@@ -22,5 +22,5 @@ app.use("/api/auth", authRoutes);
 const server = http.createServer(app);
 
 server.listen(PORT, () => {
-  console.log("Express server listening on port " + PORT);
+  console.log("Server listening on PORT " + PORT);
 });
