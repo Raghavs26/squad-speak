@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+
 import "./App.css";
 
 import LoginPage from "./authPages/LoginPage/LoginPage";
@@ -20,18 +21,6 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/" element={<Navigate replace to="/dashboard" />} />
-          {/* <Route exact path="/login">
-            <LoginPage />
-          </Route>
-          <Route exact path="/register">
-            <RegisterPage />
-          </Route>
-          <Route exact path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/dasboard" />
-          </Route> */}
         </Routes>
       </Router>
     </>

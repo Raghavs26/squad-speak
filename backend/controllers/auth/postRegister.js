@@ -21,7 +21,7 @@ const postRegister = async (req, res) => {
     // create JWT token
     const token = jwt.sign(
       {
-        userId: user_id,
+        userId: user._id,
         mail,
       },
       process.env.TOKEN_KEY,

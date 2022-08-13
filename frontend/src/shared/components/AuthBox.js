@@ -11,7 +11,7 @@ const BoxWrapper = styled("div")({
   background: "#5865F2",
 });
 
-const AuthBox = ({ children }) => {
+const AuthBox = (props) => {
   return (
     <BoxWrapper>
       <Box
@@ -26,7 +26,7 @@ const AuthBox = ({ children }) => {
           padding: "25px",
         }}
       >
-        {children}
+        {props.children}
       </Box>
     </BoxWrapper>
   );
