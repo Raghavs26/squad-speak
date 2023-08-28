@@ -1,5 +1,4 @@
 const express = require("express");
-const http = require("http");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
@@ -19,8 +18,6 @@ const authRoutes = require("./routes/authRoutes");
 
 app.use("/api/auth", authRoutes);
 
-const server = http.createServer(app);
-
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log("Server listening on PORT " + PORT);
 });

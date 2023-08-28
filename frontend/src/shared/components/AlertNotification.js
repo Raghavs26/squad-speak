@@ -10,14 +10,16 @@ const AlertNotification = ({
   alertMessageContent,
 }) => {
   return (
-    <Snackbar
-      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      open={showAlertMessage}
-      onClose={closeAlertMessage}
-      autoHideDuration={6000}
-    >
-      <Alert severity="info">{alertMessageContent}</Alert>
-    </Snackbar>
+    <>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={showAlertMessage}
+        onClose={closeAlertMessage}
+        autoHideDuration={6000}
+      >
+        <Alert severity="info">{alertMessageContent}</Alert>
+      </Snackbar>
+    </>
   );
 };
 
