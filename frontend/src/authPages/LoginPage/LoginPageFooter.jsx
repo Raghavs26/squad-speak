@@ -1,8 +1,9 @@
-import React from "react";
-import CustomPrimaryButton from "../../shared/components/CustomPrimaryButton";
-import RedirectInfo from "../../shared/components/RedirectInfo";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
+
+import CustomPrimaryButton from "../../shared/components/CustomPrimaryButton.jsx";
+import RedirectInfo from "../../shared/components/RedirectInfo.jsx";
 
 const getFormNotValidMessage = () => {
   return "Enter correct e-mail address and password should contains between 6 and 12 characters";
@@ -27,7 +28,7 @@ const LoginPageFooter = ({ handleLogin, isFormValid }) => {
         <div>
           <CustomPrimaryButton
             label="Log in"
-            additionalStyles={{ marginTop: "30px" }}
+            additionalStyles={{ marginTop: "1.875rem" }}
             disabled={!isFormValid}
             onClick={handleLogin}
           />
@@ -36,11 +37,20 @@ const LoginPageFooter = ({ handleLogin, isFormValid }) => {
       <RedirectInfo
         text="Need an account? "
         redirectText="Create an account"
-        additionalStyles={{ marginTop: "5px" }}
+        additionalStyles={{ marginTop: "0.375rem" }}
         redirectHandler={handlePushToRegisterPage}
       />
     </>
   );
+};
+
+LoginPageFooter.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  isFormValid: PropTypes.bool.isRequired,
+};
+
+LoginPageFooter.defaultProps = {
+  isFormValid: false,
 };
 
 export default LoginPageFooter;

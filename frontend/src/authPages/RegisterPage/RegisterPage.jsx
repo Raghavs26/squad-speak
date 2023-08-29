@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
-import AuthBox from "../../shared/components/AuthBox";
-import RegisterPageInputs from "./RegisterPageInputs";
-import RegisterPageFooter from "./RegisterPageFooter";
-import { validateRegisterForm } from "../../shared/utils/validators";
+import AuthBox from "../../shared/components/AuthBox.jsx";
+import RegisterPageInputs from "./RegisterPageInputs.jsx";
+import RegisterPageFooter from "./RegisterPageFooter.jsx";
+import { validateRegisterForm } from "../../shared/utils/validators.js";
 import { connect } from "react-redux";
 import { getActions } from "../../store/actions/authActions";
 import { useNavigate } from "react-router-dom";
@@ -58,10 +59,17 @@ const RegisterPage = ({ register }) => {
   );
 };
 
+RegisterPage.propTypes = {
+  register: PropTypes.func.isRequired,
+};
+
 const mapActionsToProps = (dispatch) => {
   return {
     ...getActions(dispatch),
   };
 };
 
-export default connect(null, mapActionsToProps)(RegisterPage);
+export const RegisterPageComponent = connect(
+  null,
+  mapActionsToProps
+)(RegisterPage);

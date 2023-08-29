@@ -6,6 +6,7 @@ const initState = {
 };
 
 const reducer = (state = initState, action) => {
+  console.log(action);
   switch (action.type) {
     case alertActions.OPEN_ALERT_MESSAGE:
       return {

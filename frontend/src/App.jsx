@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,10 +7,10 @@ import {
 
 import "./App.css";
 
-import LoginPage from "./authPages/LoginPage/LoginPage";
-import RegisterPage from "./authPages/RegisterPage/RegisterPage";
-import Dashboard from "./Dashboard/Dashboard";
-import AlertNotification from "./shared/components/AlertNotification";
+import { LoginPageComponent as LoginPage } from "./authPages/LoginPage/LoginPage.jsx";
+import { RegisterPageComponent as RegisterPage } from "./authPages/RegisterPage/RegisterPage.jsx";
+import Dashboard from "./Dashboard/Dashboard.jsx";
+import { AlertNotificationComponent as AlertNotification } from "./shared/components/AlertNotification.jsx";
 
 const App = () => {
   return (

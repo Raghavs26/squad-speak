@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { styled } from "@mui/system";
 
 const Wrapper = styled("div")({
@@ -12,24 +12,22 @@ const Label = styled("p")({
   color: "#b9bbbe",
   textTransform: "uppercase",
   fontWeight: "600",
-  fontSize: "16px",
+  fontSize: "1rem",
 });
 
 const Input = styled("input")({
   flexGrow: 1,
-  height: "40px",
+  height: "2.5rem",
   border: "1px solid black",
-  borderRadius: "5px",
+  borderRadius: "0.375rem",
   color: "#dcddde",
   background: "#35393f",
   margin: 0,
-  fontSize: "16px",
-  padding: "0 5px",
+  fontSize: "1rem",
+  padding: "0 0.375rem",
 });
 
-const InputWithLabel = (props) => {
-  const { value, setValue, label, type, placeholder } = props;
-
+const InputWithLabel = ({ value, setValue, label, type, placeholder }) => {
   const handleValueChange = (event) => {
     setValue(event.target.value);
   };
@@ -45,6 +43,20 @@ const InputWithLabel = (props) => {
       />
     </Wrapper>
   );
+};
+
+InputWithLabel.propTypes = {
+  value: PropTypes.string.isRequired,
+  setValue: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+};
+
+InputWithLabel.defaultProps = {
+  value: "",
+  type: "text",
+  placeholder: "",
 };
 
 export default InputWithLabel;

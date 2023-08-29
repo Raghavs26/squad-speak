@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/system";
 
@@ -19,17 +19,21 @@ const AuthBox = (props) => {
           width: 700,
           height: 400,
           bgcolor: "#36393f",
-          borderRadius: "5px",
+          borderRadius: "0.375rem",
           boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
           display: "flex",
           flexDirection: "column",
-          padding: "25px",
+          padding: "1.5rem",
         }}
       >
         {props.children}
       </Box>
     </BoxWrapper>
   );
+};
+
+AuthBox.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default AuthBox;

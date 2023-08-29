@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 
 const CustomPrimaryButton = ({
@@ -14,18 +14,31 @@ const CustomPrimaryButton = ({
         bgcolor: "#5865F2",
         color: "white",
         textTransform: "none",
-        fontSize: "16px",
+        fontSize: "1rem",
         fontWeight: 500,
         width: "100%",
-        height: "40px",
+        height: "2.5rem",
       }}
-      style={additionalStyles ? additionalStyles : {}}
+      style={additionalStyles || {}}
       disabled={disabled}
       onClick={onClick}
     >
       {label}
     </Button>
   );
+};
+
+CustomPrimaryButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  additionalStyles: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
+CustomPrimaryButton.defaultProps = {
+  additionalStyles: {},
+  disabled: false,
+  onClick: () => {},
 };
 
 export default CustomPrimaryButton;

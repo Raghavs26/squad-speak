@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import AuthBox from "../../shared/components/AuthBox";
-import LoginPageFooter from "./LoginPageFooter";
-import LoginPageHeader from "./LoginPageHeader";
-import LoginPageInputs from "./LoginPageInputs";
-import { validateLoginForm } from "../../shared/utils/validators";
-import { connect } from "react-redux";
-import { getActions } from "../../store/actions/authActions";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+import LoginPageFooter from "./LoginPageFooter.jsx";
+import LoginPageHeader from "./LoginPageHeader.jsx";
+import LoginPageInputs from "./LoginPageInputs.jsx";
+import { validateLoginForm } from "../../shared/utils/validators";
+import AuthBox from "../../shared/components/AuthBox.jsx";
+import { getActions } from "../../store/actions/authActions";
 
 const LoginPage = ({ login }) => {
   const navigate = useNavigate();
@@ -41,10 +43,14 @@ const LoginPage = ({ login }) => {
   );
 };
 
+LoginPage.propTypes = {
+  login: PropTypes.func.isRequired,
+};
+
 const mapActionsToProps = (dispatch) => {
   return {
     ...getActions(dispatch),
   };
 };
 
-export default connect(null, mapActionsToProps)(LoginPage);
+export const LoginPageComponent = connect(null, mapActionsToProps)(LoginPage);
