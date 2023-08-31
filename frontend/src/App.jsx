@@ -9,7 +9,7 @@ import "./App.css";
 
 import { LoginPageComponent as LoginPage } from "./authPages/LoginPage/LoginPage.jsx";
 import { RegisterPageComponent as RegisterPage } from "./authPages/RegisterPage/RegisterPage.jsx";
-import Dashboard from "./Dashboard/Dashboard.jsx";
+import { DashboardComponent as Dashboard } from "./Dashboard/Dashboard.jsx";
 import { AlertNotificationComponent as AlertNotification } from "./shared/components/AlertNotification.jsx";
 
 const App = () => {
