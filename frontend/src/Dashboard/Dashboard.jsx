@@ -9,6 +9,7 @@ import Messenger from "./Messenger/Messenger.jsx";
 import AppBar from "./AppBar/AppBar.jsx";
 import { logout } from "../shared/utils/auth.js";
 import { getActions } from "../store/actions/authActions.js";
+import { connectWithSocketServer } from "../realtimeCommunication/socketConnection.js";
 
 const Wrapper = styled("div")({
   width: "100%",
@@ -22,7 +23,9 @@ const Dashboard = ({ setUserDetails }) => {
     if (!userDetails) {
       logout();
     } else {
-      setUserDetails(JSON.parse(userDetails));
+      const userdetails = JSON.parse(userDetails);
+      setUserDetails(userdetails);
+      connectWithSocketServer(userdetails);
     }
   }, []);
 
