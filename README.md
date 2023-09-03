@@ -21,9 +21,14 @@
      TOKEN_KEY=
      ```
 
-     Be sure to replace the placeholders (`API_PORT`, `MONGO_URI`, and `TOKEN_KEY`) with your actual configuration values. 
+     Be sure to replace the placeholders (`API_PORT`, `MONGO_URI`, and `TOKEN_KEY`) with your actual configuration values.
 
      - `API_PORT` should be different from the default port used by your frontend application (Vite uses port 5173).
+
+   - **Important:** Make sure you have `nodemon` installed globally or as a development dependency. If not, you can install it using:
+     ```
+     npm install -g nodemon
+     ```
 
 2. **Frontend Setup:**
 
@@ -41,7 +46,7 @@ To run both the backend and frontend simultaneously using `concurrently`, follow
 1. **Start Both Frontend and Backend:**
 
    - In your terminal, navigate to the `frontend` folder
-     
+
    - Start both the frontend and backend concurrently by running:
      ```
      npm run start
