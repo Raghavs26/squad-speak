@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CustomPrimaryButton from "../../shared/components/CustomPrimaryButton";
-import AddFriendDialog from "./AddFriendDialog";
+import { AddFriendDialogComponent as AddFriendDialog } from "./AddFriendDialog";
 
 const additionalStyles = {
   marginTop: "0.625rem",
