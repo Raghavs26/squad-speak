@@ -2,12 +2,10 @@ const express = require("express");
 const Joi = require("joi");
 const { body } = require("express-joi-validation").createValidator({});
 
-const router = express.Router();
-
-const {
-  controllers: { postLogin, postRegister },
-} = require("../controllers/auth/authControllers");
+const { postRegister, postLogin } = require("../controllers/authControllers");
 const auth = require("../middleware/auth");
+
+const router = express.Router();
 
 const registerSchema = Joi.object({
   username: Joi.string().min(3).max(12).required(),
