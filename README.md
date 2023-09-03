@@ -28,9 +28,6 @@
 2. **Frontend Setup:**
 
    - In your terminal, navigate to the `frontend` folder:
-     ```
-     cd path/to/frontend
-     ```
 
    - Install the required dependencies for the frontend by running:
      ```
