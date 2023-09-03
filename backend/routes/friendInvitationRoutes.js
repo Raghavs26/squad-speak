@@ -20,9 +20,7 @@ const inviteDecisionSchema = Joi.object({
 });
 
 router.post("/invite", auth, body(postFriendInvitationSchema), postInvite);
-
 router.post("/accept", auth, body(inviteDecisionSchema), postAccept);
-
 router.post("/reject", auth, body(inviteDecisionSchema), postReject);
 
 module.exports = router;

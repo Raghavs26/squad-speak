@@ -38,12 +38,10 @@ const FriendsListItem = ({ id, username, isOnline }) => {
 };
 
 FriendsListItem.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   isOnline: PropTypes.bool.isRequired,
 };
-
-
 
 // FriendsListItem.defaultProps = {
 //   id: 0,

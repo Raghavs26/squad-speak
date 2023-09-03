@@ -2,7 +2,7 @@ import { styled } from "@mui/system";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import PendingInvitationsListItem from "./PendingInvitationsListItem.jsx";
+import { PendingInvitationsComponenet as PendingInvitationsListItem } from "./PendingInvitationsListItem.jsx";
 
 const MainContainer = styled("div")({
   width: "100%",
@@ -36,7 +36,6 @@ PendingInvitationsList.defaultProps = {
 };
 
 const mapStoreStateToProps = ({ friends }) => {
-  console.log("friends", friends);
   return {
     ...friends,
   };
