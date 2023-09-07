@@ -6,9 +6,11 @@ import {
 } from "../store/actions/friendsActions";
 import store from "../store/store";
 
+let socket = null;
+
 export const connectWithSocketServer = (userDetails) => {
   const jwtToken = userDetails.token;
-  const socket = io("http://localhost:5000", {
+  socket = io("http://localhost:5000", {
     auth: {
       token: jwtToken,
     },
@@ -33,4 +35,9 @@ export const connectWithSocketServer = (userDetails) => {
     const { onlineUsers } = data;
     store.dispatch(setOnlineUsers(onlineUsers));
   });
+};
+
+export const sendDirectMessage = (data) => {
+  console.log(data);
+  socket.emit("direct-message", data);
 };

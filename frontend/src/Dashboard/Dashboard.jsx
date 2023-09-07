@@ -5,7 +5,7 @@ import Proptypes from "prop-types";
 
 import SideBar from "./SideBar/SideBar.jsx";
 import FriendsSideBar from "./FriendsSideBar/FriendsSideBar.jsx";
-import Messenger from "./Messenger/Messenger.jsx";
+import { MessengerComponent as Messenger } from "./Messenger/Messenger.jsx";
 import AppBar from "./AppBar/AppBar.jsx";
 import { logout } from "../shared/utils/auth.js";
 import { getActions } from "../store/actions/authActions.js";

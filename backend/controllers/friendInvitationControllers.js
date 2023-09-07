@@ -8,8 +8,8 @@
 //   postReject,
 // };
 
-const User = require("../models/user");
-const FriendInvitation = require("../models/friendInvitation");
+const User = require("../models/User");
+const FriendInvitation = require("../models/FriendInvitation");
 const {
   updateFriendsPendingInvitations,
   updateFriends,

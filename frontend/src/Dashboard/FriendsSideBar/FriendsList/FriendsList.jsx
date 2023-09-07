@@ -2,7 +2,7 @@ import { styled } from "@mui/system";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import FriendsListItem from "./FriendsListItem";
+import { FreindsListItemComponent as FriendsListItem } from "./FriendsListItem";
 
 const MainContainer = styled("div")({
   flexGrow: 1,

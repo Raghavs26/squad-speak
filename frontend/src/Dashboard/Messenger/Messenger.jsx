@@ -1,4 +1,9 @@
 import { styled } from "@mui/system";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+import WelcomeMessage from "./WelcomeMessage.jsx";
+import MessengerContent from "./MessengerContent.jsx";
 
 const MainContainer = styled("div")({
   flexGrow: 1,
@@ -7,8 +12,26 @@ const MainContainer = styled("div")({
   display: "flex",
 });
 
-const Messenger = () => {
-  return <MainContainer></MainContainer>;
+const Messenger = ({ chosenChatDetails }) => {
+  return (
+    <MainContainer>
+      {!chosenChatDetails ? (
+        <WelcomeMessage />
+      ) : (
+        <MessengerContent chosenChatDetail={chosenChatDetails} />
+      )}
+    </MainContainer>
+  );
 };
 
-export default Messenger;
+Messenger.propTypes = {
+  chosenChatDetails: PropTypes.object,
+};
+
+const mapStoreStateToProps = ({ chat }) => {
+  return {
+    ...chat,
+  };
+};
+
+export const MessengerComponent = connect(mapStoreStateToProps)(Messenger);

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Schema = mongoose.Schema;
+const { Schema, model } = mongoose;
 
 const friendInvitationSchema = new Schema({
   senderId: {
@@ -13,4 +13,4 @@ const friendInvitationSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("FriendInvitation", friendInvitationSchema);
+module.exports = model("FriendInvitation", friendInvitationSchema);
