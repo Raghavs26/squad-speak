@@ -1,4 +1,3 @@
-import { userRef, useEffect } from "react";
 import { styled } from "@mui/system";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
