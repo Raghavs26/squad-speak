@@ -1,4 +1,5 @@
 const Message = require("../models/Message");
+const Conversation = require("../models/Conversation");
 const { addNewConnectedUser, removeConnectedUser } = require("../serverStore");
 const {
   updateFriendsPendingInvitations,
@@ -53,9 +54,24 @@ const directMessageHandler = async (socket, data) => {
         messages: [message._id],
         participants: [userId, recieverId],
       });
+      updateChatHistory(newConversation._id.toString());
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+const directChatHistoryHandler = async (socket, data) => {
+  const { userId } = socket.user;
+  const { recieverId } = data;
+
+  const conversation = await Conversation.findOne({
+    participants: { $all: [userId, recieverId] },
+    type: "DIRECT",
+  });
+
+  if (conversation) {
+    updateChatHistory(conversation._id.toString(), socket.id);
   }
 };
 
