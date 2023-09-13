@@ -11,7 +11,6 @@ export const getActions = (dispatch) => {
 };
 
 export const openAlertMessage = (content) => {
-  console.log("content", content);
   return {
     type: alertActions.OPEN_ALERT_MESSAGE,
     content,

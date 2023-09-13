@@ -6,11 +6,8 @@ const postRegister = async (req, res) => {
   try {
     const { username, mail, password } = req.body;
 
-    console.log("user register request came");
     // check if user exists
     const userExists = await User.exists({ mail: mail.toLowerCase() });
-
-    console.log(userExists);
 
     if (userExists) {
       return res.status(409).send("E-mail already in use.");
@@ -53,12 +50,9 @@ const postRegister = async (req, res) => {
 
 const postLogin = async (req, res) => {
   try {
-    console.log("login event came");
     const { mail, password } = req.body;
 
     const user = await User.findOne({ mail: mail.toLowerCase() });
-
-    console.log(user);
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // send new token

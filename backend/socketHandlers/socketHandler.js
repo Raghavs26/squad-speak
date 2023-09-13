@@ -57,7 +57,7 @@ const directMessageHandler = async (socket, data) => {
       updateChatHistory(newConversation._id.toString());
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

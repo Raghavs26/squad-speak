@@ -11,7 +11,6 @@ const Wrapper = styled("div")({
 });
 
 const MessengerContent = ({ chosenChatDetails }) => {
-  console.log(chosenChatDetails);
   useEffect(() => {
     getDirectChatHistory({
       receiverUserId: chosenChatDetails.id,

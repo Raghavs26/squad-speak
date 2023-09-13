@@ -22,7 +22,7 @@ const updateFriendsPendingInvitations = async (userId) => {
       });
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -57,7 +57,7 @@ const updateFriends = async (userId) => {
       }
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 

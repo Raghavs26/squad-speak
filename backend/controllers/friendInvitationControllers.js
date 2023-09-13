@@ -109,7 +109,6 @@ const postAccept = async (req, res) => {
 
     return res.status(200).send("Friend successfuly added");
   } catch (err) {
-    console.log(err);
     return res.status(500).send("Something went wrong. Please try again");
   }
 };
@@ -130,7 +129,6 @@ const postReject = async (req, res) => {
 
     return res.status(200).send("Invitation succesfully rejected");
   } catch (err) {
-    console.log(err);
     return res.status(500).send("Something went wrong please try again");
   }
 };
