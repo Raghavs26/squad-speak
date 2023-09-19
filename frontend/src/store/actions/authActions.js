@@ -25,11 +25,10 @@ const login = (userDetails, navigate) => {
   return async (dispatch) => {
     const response = await api.login(userDetails);
     if (response.error) {
-      dispatch(openAlertMessage(response?.execption?.response.data));
+      dispatch(openAlertMessage(response?.exception?.response.data));
     } else {
       const { userDetails } = response?.data ?? {};
       localStorage.setItem("user", JSON.stringify(userDetails));
-
       dispatch(setUserDetails(userDetails));
       navigate("/dashboard");
     }
