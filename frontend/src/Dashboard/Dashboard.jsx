@@ -5,6 +5,7 @@ import Proptypes from "prop-types";
 
 import SideBar from "./SideBar/SideBar.jsx";
 import FriendsSideBar from "./FriendsSideBar/FriendsSideBar.jsx";
+import Room from "./Room/Room.jsx";
 import { MessengerComponent as Messenger } from "./Messenger/Messenger.jsx";
 import AppBar from "./AppBar/AppBar.jsx";
 import { logout } from "../shared/utils/auth.js";
@@ -17,7 +18,7 @@ const Wrapper = styled("div")({
   display: "flex",
 });
 
-const Dashboard = ({ setUserDetails }) => {
+const Dashboard = ({ setUserDetails, isUserInRoom }) => {
   useEffect(() => {
     const userDetails = localStorage.getItem("user");
     if (!userDetails) {
@@ -34,16 +35,27 @@ const Dashboard = ({ setUserDetails }) => {
       <FriendsSideBar />
       <Messenger />
       <AppBar />
+      {isUserInRoom && <Room />}
     </Wrapper>
   );
 };
 
 Dashboard.propTypes = {
   setUserDetails: Proptypes.func.isRequired,
+  isUserInRoom: Proptypes.bool.isRequired,
 };
 
 const mapActionsToProps = (dispatch) => {
   return { ...getActions(dispatch) };
 };
 
-export const DashboardComponent = connect(null, mapActionsToProps)(Dashboard);
+const mapStoreStateToProps = ({ room }) => {
+  return {
+    ...room,
+  };
+};
+
+export const DashboardComponent = connect(
+  mapStoreStateToProps,
+  mapActionsToProps
+)(Dashboard);
