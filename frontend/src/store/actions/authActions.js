@@ -25,6 +25,7 @@ const login = (userDetails, navigate) => {
   return async (dispatch) => {
     const response = await api.login(userDetails);
     if (response.error) {
+      console.log(response);
       dispatch(openAlertMessage(response?.exception?.response.data));
     } else {
       const { userDetails } = response?.data ?? {};
