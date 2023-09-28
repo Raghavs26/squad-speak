@@ -4,12 +4,15 @@ const {
   addNewConnectedUser,
   removeConnectedUser,
   addNewActiveRoom,
+  getActiveRoom,
+  joinActiveRoom,
 } = require("../serverStore");
 const {
   updateFriendsPendingInvitations,
   updateFriends,
 } = require("../socketHandlers/updates/friends");
 const { updateChatHistory } = require("./updates/chat");
+const { updateRooms } = require("./updates/rooms");
 
 const newConnectionHandler = async (socket, io) => {
   const userDetails = socket.user;
@@ -82,18 +85,43 @@ const directChatHistoryHandler = async (socket, data) => {
 const roomCreateHandler = (socket) => {
   console.log("room create handler");
   const socketId = socket.id;
-  const { userId } = socket.user.userId;
+  const { userId } = socket.user;
 
   const roomDetails = addNewActiveRoom(userId, socketId);
 
   socket.emit("room-create", {
     roomDetails,
   });
+
+  updateRooms();
 };
 
+const roomJoinHandler = (socket, data) => {
+  const { roomId } = data;
+
+  const participantDetails = {
+    userId: socket.user.userId,
+    socketId: socket.id,
+  };
+
+  const roomDetails = getActiveRoom(roomId);
+  joinActiveRoom(roomId, participantDetails);
+
+  // send information to users in room that they should prepare for incoming connection
+  // roomDetails.participants.forEach((participant) => {
+  //   if (participant.socketId !== participantDetails.socketId) {
+  //     socket.to(participant.socketId).emit("conn-prepare", {
+  //       connUserSocketId: participantDetails.socketId,
+  //     });
+  //   }
+  // });
+
+  updateRooms();
+};
 module.exports = {
   newConnectionHandler,
   disconnectHandler,
   directMessageHandler,
   roomCreateHandler,
+  roomJoinHandler,
 };

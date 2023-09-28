@@ -12,7 +12,6 @@ const AvatarPreview = styled("div")({
   color: "#fff",
   fontWeight: "400",
   fontSize: "1.25rem",
-  marginLeft: "5px",
 });
 
 const Avatar = ({ username, large }) => {

@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 import { connect } from "react-redux";
 import Proptypes from "prop-types";
 
-import SideBar from "./SideBar/SideBar.jsx";
+import { SidebarComponent as SideBar } from "./SideBar/SideBar.jsx";
 import FriendsSideBar from "./FriendsSideBar/FriendsSideBar.jsx";
 import Room from "./Room/Room.jsx";
 import { MessengerComponent as Messenger } from "./Messenger/Messenger.jsx";
