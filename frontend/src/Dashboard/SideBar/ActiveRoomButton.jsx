@@ -43,18 +43,11 @@ const ActiveRoomButton = ({
   );
 };
 
-ActiveRoomButton.prototypes = {
+ActiveRoomButton.propTypes = {
   creatorUsername: PropTypes.string.isRequired,
   roomId: PropTypes.string.isRequired,
   totalParticipants: PropTypes.number.isRequired,
   isUserInRoom: PropTypes.bool.isRequired,
-};
-
-ActiveRoomButton.defaultProps = {
-  creatorUsername: "",
-  roomId: "",
-  totalParticipants: 0,
-  isUserInRoom: false,
 };
 
 export default ActiveRoomButton;
