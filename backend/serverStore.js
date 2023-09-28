@@ -1,4 +1,5 @@
 const connectedUsers = new Map();
+let activeRooms = [];
 
 let io = null;
 
@@ -42,6 +43,26 @@ const getOnlineUsers = () => {
   return onlineUsers;
 };
 
+//rooms
+const addNewActiveRoom = (userId, socketId) => {
+  const newActiveRoom = {
+    roomCreator: {
+      userId,
+      socketId,
+    },
+    participants: [
+      {
+        userId,
+        socketId,
+      },
+    ],
+    roomId: crypto.randomUUID(),
+  };
+  activeRooms = [...activeRooms, newActiveRoom];
+  console.log("activeRooms\n", activeRooms);
+  return newActiveRoom;
+};
+
 module.exports = {
   addNewConnectedUser,
   removeConnectedUser,
@@ -49,4 +70,5 @@ module.exports = {
   setSocketServerInstance,
   getSocketServerInstance,
   getOnlineUsers,
+  addNewActiveRoom,
 };

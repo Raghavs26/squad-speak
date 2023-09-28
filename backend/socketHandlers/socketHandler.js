@@ -1,6 +1,10 @@
 const Message = require("../models/Message");
 const Conversation = require("../models/Conversation");
-const { addNewConnectedUser, removeConnectedUser } = require("../serverStore");
+const {
+  addNewConnectedUser,
+  removeConnectedUser,
+  addNewActiveRoom,
+} = require("../serverStore");
 const {
   updateFriendsPendingInvitations,
   updateFriends,
@@ -75,8 +79,21 @@ const directChatHistoryHandler = async (socket, data) => {
   }
 };
 
+const roomCreateHandler = (socket) => {
+  console.log("room create handler");
+  const socketId = socket.id;
+  const { userId } = socket.user.userId;
+
+  const roomDetails = addNewActiveRoom(userId, socketId);
+
+  socket.emit("room-create", {
+    roomDetails,
+  });
+};
+
 module.exports = {
   newConnectionHandler,
   disconnectHandler,
   directMessageHandler,
+  roomCreateHandler,
 };
