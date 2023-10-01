@@ -1,4 +1,6 @@
 import io from "socket.io-client";
+
+import * as webRTCHandler from "./webRTCHandler";
 import {
   setPendingFriendsInvitations,
   setFriends,
@@ -44,8 +46,15 @@ export const connectWithSocketServer = (userDetails) => {
   socket.on("room-create", (data) => {
     newRoomCreated(data);
   });
+
   socket.on("active-rooms", (data) => {
     updateActiveRooms(data);
+  });
+
+  socket.on("conn-prepare", (data) => {
+    const { connUserSocketId } = data;
+    webRTCHandler.prepareNewPeerConnection(connUserSocketId, false);
+    socket.emit("conn-init", { connUserSocketId });
   });
 };
 

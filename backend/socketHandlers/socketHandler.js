@@ -114,13 +114,13 @@ const roomJoinHandler = (socket, data) => {
   joinActiveRoom(roomId, participantDetails);
 
   // send information to users in room that they should prepare for incoming connection
-  // roomDetails.participants.forEach((participant) => {
-  //   if (participant.socketId !== participantDetails.socketId) {
-  //     socket.to(participant.socketId).emit("conn-prepare", {
-  //       connUserSocketId: participantDetails.socketId,
-  //     });
-  //   }
-  // });
+  roomDetails.participants.forEach((participant) => {
+    if (participant.socketId !== participantDetails.socketId) {
+      socket.to(participant.socketId).emit("conn-prepare", {
+        connUserSocketId: participantDetails.socketId,
+      });
+    }
+  });
 
   updateRooms();
 };
@@ -133,7 +133,7 @@ const roomLeaveHandler = (socket, data) => {
   if (activeRoom) {
     leaveActiveRoom(roomId, socket.id);
 
-    // const updatedActiveRoom = getActiveRoom(roomId);
+    const updatedActiveRoom = getActiveRoom(roomId);
 
     // if (updatedActiveRoom) {
     //   updatedActiveRoom.participants.forEach((participant) => {
