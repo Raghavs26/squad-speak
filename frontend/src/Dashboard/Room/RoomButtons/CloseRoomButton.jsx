@@ -1,8 +1,11 @@
 import { IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import { leaveRoom } from "../../../realtimeCommunication/roomHandler";
 
 const CloseRoomButton = () => {
-  const handleLeaveRoom = () => {};
+  const handleLeaveRoom = () => {
+    leaveRoom();
+  };
   return (
     <IconButton onClick={handleLeaveRoom} style={{ color: "white" }}>
       <Close />

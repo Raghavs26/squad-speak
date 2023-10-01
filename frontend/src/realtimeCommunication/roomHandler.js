@@ -1,14 +1,21 @@
 import store from "../store/store";
 import {
   setActiveRooms,
+  setLocalStream,
   setOpenRoom,
   setRoomDetails,
 } from "../store/actions/roomActions";
 import * as socketConnection from "./socketConnection";
+import * as webRTCHandler from "./webRTCHandler";
 
 export const createNewRoom = () => {
-  store.dispatch(setOpenRoom(true, true));
-  socketConnection.createNewRoom();
+  const successCallback = () => {
+    store.dispatch(setOpenRoom(true, true));
+    socketConnection.createNewRoom();
+  };
+
+  const onlyAudio = store.getState().room.audioOnly;
+  webRTCHandler.getLocalStreamPreview(onlyAudio, successCallback);
 };
 
 export const newRoomCreated = (data) => {
@@ -34,7 +41,23 @@ export const updateActiveRooms = (data) => {
 };
 
 export const joinRoom = (roomId) => {
-  store.dispatch(setRoomDetails({ roomId }));
-  store.dispatch(setOpenRoom(false, true));
-  socketConnection.joinRoom({ roomId });
+  const successCalbackFunc = () => {
+    store.dispatch(setRoomDetails({ roomId }));
+    store.dispatch(setOpenRoom(false, true));
+    socketConnection.joinRoom({ roomId });
+  };
+  const onlyAudio = store.getState().room.audioOnly;
+  webRTCHandler.getLocalStreamPreview(onlyAudio, successCalbackFunc);
+};
+
+export const leaveRoom = () => {
+  const roomId = store.getState().room.roomDetails.roomId;
+  const localStream = store.getState().room.localStream;
+  if (localStream) {
+    localStream.getTracks().forEach((track) => track.stop());
+    store.dispatch(setLocalStream(null));
+  }
+  socketConnection.leaveRoom({ roomId });
+  store.dispatch(setRoomDetails(null));
+  store.dispatch(setOpenRoom(false, false));
 };

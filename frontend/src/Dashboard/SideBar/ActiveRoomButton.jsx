@@ -47,7 +47,7 @@ ActiveRoomButton.propTypes = {
   creatorUsername: PropTypes.string.isRequired,
   roomId: PropTypes.string.isRequired,
   totalParticipants: PropTypes.number.isRequired,
-  isUserInRoom: PropTypes.bool.isRequired,
+  isUserInRoom: PropTypes.bool,
 };
 
 export default ActiveRoomButton;

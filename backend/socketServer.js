@@ -5,6 +5,7 @@ const {
   directMessageHandler,
   roomCreateHandler,
   roomJoinHandler,
+  roomLeaveHandler,
 } = require("./socketHandlers/socketHandler");
 
 const { setSocketServerInstance, getOnlineUsers } = require("./serverStore");
@@ -46,6 +47,10 @@ const registerSocketServer = (server) => {
 
     socket.on("room-join", (data) => {
       roomJoinHandler(socket, data);
+    });
+
+    socket.on("room-leave", (data) => {
+      roomLeaveHandler(socket, data);
     });
 
     socket.on("disconnect", () => {

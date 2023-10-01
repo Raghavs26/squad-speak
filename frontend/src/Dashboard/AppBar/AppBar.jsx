@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-import DropdownMenu from "./DropDownMenu";
+import { DropdownMenuComponent as DropdownMenu } from "./DropDownMenu";
 import { ChosenOptionLabelComponent as ChosenOptionLabel } from "./ChosenOptionLabel";
 
 const MainContainer = styled("div")({

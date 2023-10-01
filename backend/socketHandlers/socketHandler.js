@@ -6,6 +6,8 @@ const {
   addNewActiveRoom,
   getActiveRoom,
   joinActiveRoom,
+  leaveActiveRoom,
+  getActiveRooms,
 } = require("../serverStore");
 const {
   updateFriendsPendingInvitations,
@@ -27,6 +29,10 @@ const newConnectionHandler = async (socket, io) => {
 
   // update friends list
   updateFriends(userDetails.userId);
+
+  setTimeout(() => {
+    updateRooms(socket.id);
+  }, [500]);
 };
 
 const disconnectHandler = (socket) => {
@@ -118,10 +124,51 @@ const roomJoinHandler = (socket, data) => {
 
   updateRooms();
 };
+
+const roomLeaveHandler = (socket, data) => {
+  const { roomId } = data;
+
+  const activeRoom = getActiveRoom(roomId);
+
+  if (activeRoom) {
+    leaveActiveRoom(roomId, socket.id);
+
+    // const updatedActiveRoom = getActiveRoom(roomId);
+
+    // if (updatedActiveRoom) {
+    //   updatedActiveRoom.participants.forEach((participant) => {
+    //     socket.to(participant.socketId).emit("room-participant-left", {
+    //       connUserSocketId: socket.id,
+    //     });
+    //   });
+    // }
+
+    updateRooms();
+  }
+};
+
+const disconnectRoomHandler = (socket) => {
+  const activeRooms = getActiveRooms();
+
+  activeRooms.forEach((activeRoom) => {
+    const userInRoom = activeRoom.participants.some(
+      (participant) => participant.socketId === socket.id
+    );
+
+    if (userInRoom) {
+      roomLeaveHandler(socket, { roomId: activeRoom.roomId });
+    }
+  });
+
+  removeConnectedUser(socket.id);
+};
+
 module.exports = {
   newConnectionHandler,
   disconnectHandler,
   directMessageHandler,
   roomCreateHandler,
   roomJoinHandler,
+  roomLeaveHandler,
+  disconnectRoomHandler,
 };
