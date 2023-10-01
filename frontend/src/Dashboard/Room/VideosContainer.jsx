@@ -1,4 +1,4 @@
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { styled } from "@mui/system";
 
@@ -38,7 +38,7 @@ const mapStoreStateToProps = ({ room }) => {
 VideosContainer.propTypes = {
   localStream: PropTypes.object,
   remoteStreams: PropTypes.array,
-  screenSharingStream: PropTypes.object,
+  screenSharingStream: PropTypes.bool,
 };
 
 export const VideosContainerComponent =

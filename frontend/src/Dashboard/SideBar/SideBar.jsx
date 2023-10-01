@@ -15,12 +15,11 @@ const MainContainer = styled("div")({
   backgroundColor: "#202225",
 });
 
-const SideBar = ({ activeRooms }) => {
-  console.log(activeRooms);
+const SideBar = ({ activeRooms, isUserInRoom }) => {
   return (
     <MainContainer>
       <MainPageButton />
-      <CreateRoomButton />
+      <CreateRoomButton isUserInRoom={isUserInRoom} />
       {activeRooms.map((room) => (
         <ActiveRoomButton
           key={room.roomId}
@@ -42,6 +41,7 @@ const mapStoreStateToProps = ({ room }) => {
 
 SideBar.propTypes = {
   activeRooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isUserInRoom: PropTypes.bool.isRequired,
 };
 
 export const SidebarComponent = connect(mapStoreStateToProps)(SideBar);
