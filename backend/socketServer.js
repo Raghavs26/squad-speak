@@ -3,9 +3,12 @@ const {
   newConnectionHandler,
   disconnectHandler,
   directMessageHandler,
+  directChatHistoryHandler,
   roomCreateHandler,
   roomJoinHandler,
   roomLeaveHandler,
+  roomInitializeConnectionHandler,
+  roomSignalingDataHandler,
 } = require("./socketHandlers/socketHandler");
 
 const { setSocketServerInstance, getOnlineUsers } = require("./serverStore");
@@ -51,6 +54,14 @@ const registerSocketServer = (server) => {
 
     socket.on("room-leave", (data) => {
       roomLeaveHandler(socket, data);
+    });
+
+    socket.on("conn-init", (data) => {
+      roomInitializeConnectionHandler(socket, data);
+    });
+
+    socket.on("conn-signal", (data) => {
+      roomSignalingDataHandler(socket, data);
     });
 
     socket.on("disconnect", () => {

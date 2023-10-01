@@ -1,12 +1,14 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 import { IconButton } from "@mui/material";
 import { Videocam, VideocamOff } from "@mui/icons-material";
 
-const CameraButton = () => {
+const CameraButton = ({ localStream }) => {
   const [cameraEnabled, setCameraEnabled] = useState(true);
 
   const handleToggleCamera = () => {
+    localStream.getVideoTracks()[0].enabled = !cameraEnabled;
     setCameraEnabled(!cameraEnabled);
   };
   return (
@@ -14,6 +16,10 @@ const CameraButton = () => {
       {cameraEnabled ? <Videocam /> : <VideocamOff />}
     </IconButton>
   );
+};
+
+CameraButton.propTypes = {
+  localStream: PropTypes.object,
 };
 
 export default CameraButton;

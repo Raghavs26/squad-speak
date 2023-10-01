@@ -1,12 +1,14 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 import { IconButton } from "@mui/material";
 import { Mic, MicOff } from "@mui/icons-material";
 
-const MicButton = () => {
+const MicButton = ({ localStream }) => {
   const [micEnabled, setMicEnabled] = useState(true);
 
   const handleToggleMic = () => {
+    localStream.getAudioTracks()[0].enabled = !micEnabled;
     setMicEnabled(!micEnabled);
   };
   return (
@@ -14,6 +16,10 @@ const MicButton = () => {
       {micEnabled ? <Mic /> : <MicOff />}
     </IconButton>
   );
+};
+
+MicButton.propTypes = {
+  localStream: PropTypes.object,
 };
 
 export default MicButton;

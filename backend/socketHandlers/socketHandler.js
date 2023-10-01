@@ -42,19 +42,16 @@ const disconnectHandler = (socket) => {
 const directMessageHandler = async (socket, data) => {
   try {
     const { userId } = socket.user;
-    const { recieverId, content } = data;
+    const { receiverUserId, content } = data;
 
-    //create new message
     const message = await Message.create({
-      content,
+      content: content,
       author: userId,
       date: new Date(),
       type: "DIRECT",
     });
-
-    //check if conversation exist with this two users - if not create new
     const conversation = await Conversation.findOne({
-      participants: { $all: [userId, recieverId] },
+      participants: { $all: [userId, receiverUserId] },
     });
 
     if (conversation) {
@@ -62,29 +59,31 @@ const directMessageHandler = async (socket, data) => {
       await conversation.save();
       updateChatHistory(conversation._id.toString());
     } else {
-      //perform and update to sender and receiver if person is online
       const newConversation = await Conversation.create({
         messages: [message._id],
-        participants: [userId, recieverId],
+        participants: [userId, receiverUserId],
       });
       updateChatHistory(newConversation._id.toString());
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
 const directChatHistoryHandler = async (socket, data) => {
-  const { userId } = socket.user;
-  const { recieverId } = data;
+  try {
+    const { userId } = socket.user;
+    const { receiverUserId } = data;
+    const conversation = await Conversation.findOne({
+      participants: { $all: [userId, receiverUserId] },
+      type: "DIRECT",
+    });
 
-  const conversation = await Conversation.findOne({
-    participants: { $all: [userId, recieverId] },
-    type: "DIRECT",
-  });
-
-  if (conversation) {
-    updateChatHistory(conversation._id.toString(), socket.id);
+    if (conversation) {
+      updateChatHistory(conversation._id.toString(), socket.id);
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -135,13 +134,13 @@ const roomLeaveHandler = (socket, data) => {
 
     const updatedActiveRoom = getActiveRoom(roomId);
 
-    // if (updatedActiveRoom) {
-    //   updatedActiveRoom.participants.forEach((participant) => {
-    //     socket.to(participant.socketId).emit("room-participant-left", {
-    //       connUserSocketId: socket.id,
-    //     });
-    //   });
-    // }
+    if (updatedActiveRoom) {
+      updatedActiveRoom.participants.forEach((participant) => {
+        socket.to(participant.socketId).emit("room-participant-left", {
+          connUserSocketId: socket.id,
+        });
+      });
+    }
 
     updateRooms();
   }
@@ -163,12 +162,27 @@ const disconnectRoomHandler = (socket) => {
   removeConnectedUser(socket.id);
 };
 
+const roomInitializeConnectionHandler = (socket, data) => {
+  const { connUserSocketId } = data;
+  const initData = { connUserSocketId: socket.id };
+  socket.to(connUserSocketId).emit("conn-init", initData);
+};
+
+const roomSignalingDataHandler = (socket, data) => {
+  const { connUserSocketId, signal } = data;
+  const signalingData = { signal, connUserSocketId: socket.id };
+  socket.to(connUserSocketId).emit("conn-signal", signalingData);
+};
+
 module.exports = {
   newConnectionHandler,
   disconnectHandler,
   directMessageHandler,
+  directChatHistoryHandler,
   roomCreateHandler,
   roomJoinHandler,
   roomLeaveHandler,
   disconnectRoomHandler,
+  roomInitializeConnectionHandler,
+  roomSignalingDataHandler,
 };

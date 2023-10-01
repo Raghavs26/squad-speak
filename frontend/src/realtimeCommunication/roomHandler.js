@@ -1,21 +1,27 @@
 import store from "../store/store";
 import {
-  setActiveRooms,
-  setLocalStream,
   setOpenRoom,
   setRoomDetails,
+  setActiveRooms,
+  setLocalStream,
+  setRemoteStreams,
+  setScreenSharingStream,
+  setIsUserJoinedOnlyWithAudio,
 } from "../store/actions/roomActions";
 import * as socketConnection from "./socketConnection";
 import * as webRTCHandler from "./webRTCHandler";
 
 export const createNewRoom = () => {
-  const successCallback = () => {
+  const successCalbackFunc = () => {
     store.dispatch(setOpenRoom(true, true));
+
+    const audioOnly = store.getState().room.audioOnly;
+    store.dispatch(setIsUserJoinedOnlyWithAudio(audioOnly));
     socketConnection.createNewRoom();
   };
 
-  const onlyAudio = store.getState().room.audioOnly;
-  webRTCHandler.getLocalStreamPreview(onlyAudio, successCallback);
+  const audioOnly = store.getState().room.audioOnly;
+  webRTCHandler.getLocalStreamPreview(audioOnly, successCalbackFunc);
 };
 
 export const newRoomCreated = (data) => {
@@ -24,19 +30,27 @@ export const newRoomCreated = (data) => {
 };
 
 export const updateActiveRooms = (data) => {
-  console.log(data);
   const { activeRooms } = data;
+
   const friends = store.getState().friends.friends;
-  console.log("friends", friends);
   const rooms = [];
-  console.log("activeRooms", activeRooms);
+
+  const userId = store.getState().auth.userDetails?._id;
+
   activeRooms.forEach((room) => {
-    friends.forEach((friend) => {
-      if (friend.id === room.roomCreator.userId) {
-        rooms.push({ ...room, creatorUsername: friend.username });
-      }
-    });
+    const isRoomCreatedByMe = room.roomCreator.userId === userId;
+
+    if (isRoomCreatedByMe) {
+      rooms.push({ ...room, creatorUsername: "Me" });
+    } else {
+      friends.forEach((friend) => {
+        if (friend.id === room.roomCreator.userId) {
+          rooms.push({ ...room, creatorUsername: friend.username });
+        }
+      });
+    }
   });
+
   store.dispatch(setActiveRooms(rooms));
 };
 
@@ -44,19 +58,33 @@ export const joinRoom = (roomId) => {
   const successCalbackFunc = () => {
     store.dispatch(setRoomDetails({ roomId }));
     store.dispatch(setOpenRoom(false, true));
+    const audioOnly = store.getState().room.audioOnly;
+    store.dispatch(setIsUserJoinedOnlyWithAudio(audioOnly));
     socketConnection.joinRoom({ roomId });
   };
-  const onlyAudio = store.getState().room.audioOnly;
-  webRTCHandler.getLocalStreamPreview(onlyAudio, successCalbackFunc);
+
+  const audioOnly = store.getState().room.audioOnly;
+  webRTCHandler.getLocalStreamPreview(audioOnly, successCalbackFunc);
 };
 
 export const leaveRoom = () => {
   const roomId = store.getState().room.roomDetails.roomId;
+
   const localStream = store.getState().room.localStream;
   if (localStream) {
     localStream.getTracks().forEach((track) => track.stop());
     store.dispatch(setLocalStream(null));
   }
+
+  const screenSharingStream = store.getState().room.screenSharingStream;
+  if (screenSharingStream) {
+    screenSharingStream.getTracks().forEach((track) => track.stop());
+    store.dispatch(setScreenSharingStream(null));
+  }
+
+  store.dispatch(setRemoteStreams([]));
+  webRTCHandler.closeAllConnections();
+
   socketConnection.leaveRoom({ roomId });
   store.dispatch(setRoomDetails(null));
   store.dispatch(setOpenRoom(false, false));

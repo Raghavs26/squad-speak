@@ -1,7 +1,8 @@
 import Peer from "simple-peer";
 
 import store from "../store/store";
-import { setLocalStream } from "../store/actions/roomActions";
+import * as socketConnection from "./socketConnection";
+import { setLocalStream, setRemoteStreams } from "../store/actions/roomActions";
 
 const onlyAudioConstraints = {
   audio: true,
@@ -64,16 +65,79 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     stream: localStream,
   });
 
-  peers[connUserSocketId].on("signal", (signal) => {
-    console.log("sending signal to socket server");
-    // socketConnection.sendSignal({
-    //   connUserSocketId,
-    //   signal,
-    // });
+  peers[connUserSocketId].on("signal", (data) => {
+    const signalData = {
+      signal: data,
+      connUserSocketId: connUserSocketId,
+    };
+
+    socketConnection.signalPeerData(signalData);
   });
 
-  peers[connUserSocketId].on("stream", (stream) => {
-    console.log("stream received");
-    // dispatch action to update remote streams
+  peers[connUserSocketId].on("stream", (remoteStream) => {
+    remoteStream.connUserSocketId = connUserSocketId;
+    addNewRemoteStream(remoteStream);
   });
+};
+
+export const handleSignalingData = (data) => {
+  const { connUserSocketId, signal } = data;
+
+  if (peers[connUserSocketId]) {
+    peers[connUserSocketId].signal(signal);
+  }
+};
+
+const addNewRemoteStream = (remoteStream) => {
+  const remoteStreams = store.getState().room.remoteStreams;
+  const newRemoteStreams = [...remoteStreams, remoteStream];
+
+  store.dispatch(setRemoteStreams(newRemoteStreams));
+};
+
+export const closeAllConnections = () => {
+  Object.entries(peers).forEach((mappedObject) => {
+    const connUserSocketId = mappedObject[0];
+    if (peers[connUserSocketId]) {
+      peers[connUserSocketId].destroy();
+      delete peers[connUserSocketId];
+    }
+  });
+};
+
+export const handleParticipantLeftRoom = (data) => {
+  const { connUserSocketId } = data;
+
+  if (peers[connUserSocketId]) {
+    peers[connUserSocketId].destroy();
+    delete peers[connUserSocketId];
+  }
+
+  const remoteStreams = store.getState().room.remoteStreams;
+
+  const newRemoteStreams = remoteStreams.filter(
+    (remoteStream) => remoteStream.connUserSocketId !== connUserSocketId
+  );
+
+  store.dispatch(setRemoteStreams(newRemoteStreams));
+};
+
+export const switchOutgoingTracks = (stream) => {
+  for (const socket_id in peers) {
+    for (const index in peers[socket_id].streams[0].getTracks()) {
+      for (const index2 in stream.getTracks()) {
+        if (
+          peers[socket_id].streams[0].getTracks()[index].kind ===
+          stream.getTracks()[index2].kind
+        ) {
+          peers[socket_id].replaceTrack(
+            peers[socket_id].streams[0].getTracks()[index],
+            stream.getTracks()[index2],
+            peers[socket_id].streams[0]
+          );
+          break;
+        }
+      }
+    }
+  }
 };

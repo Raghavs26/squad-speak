@@ -1,5 +1,7 @@
-import { styled } from "@mui/system";
+import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import { styled } from "@mui/system";
+
 import Video from "./Video";
 
 const MainContainer = styled("div")({
@@ -9,17 +11,20 @@ const MainContainer = styled("div")({
   flexWrap: "wrap",
 });
 
-const VideosContainer = ({ localStream }) => {
+const VideosContainer = ({
+  localStream,
+  remoteStreams,
+  screenSharingStream,
+}) => {
   return (
     <MainContainer>
       <Video
-        // stream={screenSharingStream ? screenSharingStream : localStream}
-        stream={localStream}
+        stream={screenSharingStream ? screenSharingStream : localStream}
         isLocalStream
       />
-      {/* {remoteStreams.map((stream) => (
+      {remoteStreams.map((stream) => (
         <Video stream={stream} key={stream.id} />
-      ))} */}
+      ))}
     </MainContainer>
   );
 };
@@ -28,6 +33,12 @@ const mapStoreStateToProps = ({ room }) => {
   return {
     ...room,
   };
+};
+
+VideosContainer.propTypes = {
+  localStream: PropTypes.object,
+  remoteStreams: PropTypes.array,
+  screenSharingStream: PropTypes.object,
 };
 
 export const VideosContainerComponent =
